@@ -1,4 +1,4 @@
-MINISTERIO TEOCRÁTICO v10.3 — PWA
+MINISTERIO TEOCRÁTICO v10.4 — PWA
 
 CONTENIDO
 - Web/index.html: aplicación completa y funciones originales.
