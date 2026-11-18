@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Ministerio Teocrático — v10.4 PWA</title>
+    <title>Ministerio Teocrático — v10.5 PWA</title>
     <meta name="application-name" content="Ministerio Teocrático">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -3493,13 +3493,45 @@ button:focus-visible,.primary-btn:focus-visible,.secondary-btn:focus-visible,.da
 })();
 </script>
 <script>
+/* Actualizaciones automáticas: comprueba al abrir, al recuperar Internet y periódicamente. */
 if ("serviceWorker" in navigator && window.isSecureContext) {
-  window.addEventListener("load", async () => {
-    try {
-      const reg = await navigator.serviceWorker.register("./sw.js", {scope:"./", updateViaCache:"none"});
-      reg.update().catch(()=>{});
-    } catch (e) { console.warn("PWA: no se pudo registrar el Service Worker", e); }
-  });
+  (function () {
+    var hadController = !!navigator.serviceWorker.controller;
+    var reloadingForUpdate = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (!hadController || reloadingForUpdate) return;
+      reloadingForUpdate = true;
+      try {
+        if (sessionStorage.getItem("ministerio_sw_reloaded") === "1") return;
+        sessionStorage.setItem("ministerio_sw_reloaded", "1");
+      } catch (_) {}
+      window.location.reload();
+    });
+    window.addEventListener("load", async function () {
+      try {
+        var reg = await navigator.serviceWorker.register("./sw.js", { scope: "./", updateViaCache: "none" });
+        var checkForUpdate = function () {
+          if (navigator.onLine) reg.update().catch(function () {});
+        };
+        checkForUpdate();
+        window.addEventListener("online", checkForUpdate);
+        document.addEventListener("visibilitychange", function () {
+          if (document.visibilityState === "visible") checkForUpdate();
+        });
+        window.setInterval(checkForUpdate, 60 * 60 * 1000);
+        reg.addEventListener("updatefound", function () {
+          var installing = reg.installing;
+          if (!installing) return;
+          installing.addEventListener("statechange", function () {
+            if (installing.state === "installed" && navigator.serviceWorker.controller) {
+              // El nuevo trabajador activa la versión actualizada y la página se recarga.
+              installing.postMessage({ type: "SKIP_WAITING" });
+            }
+          });
+        });
+      } catch (e) { console.warn("PWA: no se pudo registrar o actualizar el Service Worker", e); }
+    });
+  })();
 }
 </script>
 </body>

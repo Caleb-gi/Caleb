@@ -1,4 +1,4 @@
-MINISTERIO TEOCRÁTICO v10.4 — PWA
+MINISTERIO TEOCRÁTICO v10.5 — PWA
 
 CONTENIDO
 - Web/index.html: aplicación completa y funciones originales.
@@ -13,6 +13,7 @@ INSTALACIÓN
 3. Pulsa “Activar notificaciones” y concede el permiso.
 4. Usa “Instalar aplicación” cuando Chrome ofrezca la instalación; también puedes usar el menú de Chrome > Instalar aplicación / Añadir a pantalla de inicio.
 5. Abre la aplicación al menos una vez con Internet para que se descarguen los recursos y quede preparada para uso sin conexión.
+6. Para futuras versiones, sube los archivos nuevos al mismo alojamiento HTTPS. La PWA comprobará automáticamente si hay actualizaciones cuando tenga conexión. Si no ves el cambio inmediatamente, vuelve a abrirla con Internet.
 
 MEJORAS
 - Cronómetro basado en marcas de tiempo: al volver a la PWA recupera el tiempo transcurrido aunque Android haya cerrado la página o el navegador.
@@ -20,7 +21,9 @@ MEJORAS
 - Solicita almacenamiento persistente cuando el navegador lo permite.
 - Permiso de notificaciones solicitado por acción explícita del usuario.
 - Avisos de agenda para estudios y revisitas con fecha de hoy mientras la aplicación está abierta; evita repetir el aviso del mismo día.
-- Service Worker con caché offline, actualización de versión y apertura de la aplicación al tocar una notificación.
+- Actualización automática cuando hay Internet: comprueba al abrir, al volver a primer plano, al recuperar conexión y cada hora. Si detecta una versión nueva, descarga los archivos, activa el nuevo Service Worker y recarga la aplicación.
+- La pantalla principal se obtiene primero desde Internet y usa la copia local si no hay conexión.
+- Service Worker con caché offline y apertura de la aplicación al tocar una notificación.
 - Icono oficial proporcionado integrado en PNG de 192x192, 512x512, Apple Touch Icon 180x180 y favicon 32x32.\n- El mismo icono se usa en el manifiesto, instalación y notificaciones.
 
 LIMITACIONES IMPORTANTES DE ANDROID/PWA
