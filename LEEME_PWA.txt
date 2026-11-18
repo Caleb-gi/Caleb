@@ -1,0 +1,33 @@
+MINISTERIO TEOCRÁTICO v10.3 — PWA
+
+CONTENIDO
+- Web/index.html: aplicación completa y funciones originales.
+- Web/manifest.webmanifest: manifiesto PWA.
+- Web/sw.js: caché offline, actualización y notificaciones del Service Worker.
+- Web/icon-192.png / icon-512.png: iconos PNG para instalación Android.
+- Web/Idiomas/: idiomas originales.
+
+INSTALACIÓN
+1. Sube el contenido de la carpeta Web a un alojamiento HTTPS (por ejemplo, tu hosting).
+2. Abre la dirección HTTPS desde Chrome en Android.
+3. Pulsa “Activar notificaciones” y concede el permiso.
+4. Usa “Instalar aplicación” cuando Chrome ofrezca la instalación; también puedes usar el menú de Chrome > Instalar aplicación / Añadir a pantalla de inicio.
+5. Abre la aplicación al menos una vez con Internet para que se descarguen los recursos y quede preparada para uso sin conexión.
+
+MEJORAS
+- Cronómetro basado en marcas de tiempo: al volver a la PWA recupera el tiempo transcurrido aunque Android haya cerrado la página o el navegador.
+- Guarda el estado de cronómetro en localStorage y conserva la sesión pausada.
+- Solicita almacenamiento persistente cuando el navegador lo permite.
+- Permiso de notificaciones solicitado por acción explícita del usuario.
+- Avisos de agenda para estudios y revisitas con fecha de hoy mientras la aplicación está abierta; evita repetir el aviso del mismo día.
+- Service Worker con caché offline, actualización de versión y apertura de la aplicación al tocar una notificación.
+- Icono oficial proporcionado integrado en PNG de 192x192, 512x512, Apple Touch Icon 180x180 y favicon 32x32.\n- El mismo icono se usa en el manifiesto, instalación y notificaciones.
+
+LIMITACIONES IMPORTANTES DE ANDROID/PWA
+Una PWA estática no puede mantener un proceso JavaScript ejecutándose continuamente después de que Android la cierre. Por eso el cronómetro no necesita ejecutarse en segundo plano: calcula el tiempo real desde la hora de inicio al regresar.
+Los recordatorios locales de esta versión se comprueban cuando la PWA está abierta o vuelve a primer plano. Android/Chrome no garantiza que una PWA estática despierte a una hora exacta estando cerrada. Para avisos garantizados con la PWA cerrada hace falta un servidor de notificaciones push (backend) y suscripción Push; no es posible prometerlo solo con HTML/JavaScript.
+Las notificaciones y el Service Worker requieren HTTPS (o localhost durante desarrollo). No funcionarán abriendo index.html directamente como archivo.
+Los datos se guardan localmente en el navegador de ese dispositivo. Usa la función de copia de seguridad/restauración de la aplicación para trasladarlos o protegerlos. Borrar los datos del sitio o desinstalar el navegador puede eliminarlos.
+Las bibliotecas externas (Chart.js y Font Awesome) pueden no estar disponibles sin Internet; las funciones principales y los datos locales sí quedan en caché.
+
+No se modificó el contenido de la aplicación más allá de la integración PWA y las mejoras descritas.
